@@ -1,0 +1,6 @@
+*.pem
+secret_*
+.terraform*
+*/.terraform/*
+*.tfstate*
+*key.json
