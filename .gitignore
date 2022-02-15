@@ -4,3 +4,4 @@ secret_*
 */.terraform/*
 *.tfstate*
 *key.json
+*.plan
