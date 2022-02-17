@@ -22,3 +22,33 @@ variable "networks" {
 
   default = []
 }
+
+variable "instances" {
+  type = list(object({
+    name         = string
+    machine_type = string
+    disk_image   = optional(string)
+    disk_size    = optional(number)
+    region       = optional(string)
+    zone         = string
+    subnetwork   = string
+    tags         = optional(list(string))
+  }))
+
+  default = []
+}
+
+variable "firewall_rules" {
+  type = list(object({
+    name               = string
+    network            = string
+    allowed_protocol   = string
+    allowed_ports      = list(string)
+    direction          = optional(string)
+    source_cidr_ranges = optional(list(string))
+    source_tags        = optional(list(string))
+    target_tags        = optional(list(string))
+  }))
+
+  default = []
+}
