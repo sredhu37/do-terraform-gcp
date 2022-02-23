@@ -18,7 +18,7 @@ Feel free to set your own values here.
 ```
 export PROJECT_NAME="sunny-tf-gcp"
 export SERVICE_ACCOUNT_NAME="tf-gcp-sa"
-export SERVICE_ACCOUNT_ROLES=("roles/storage.admin" "roles/compute.admin" "roles/container.admin")
+export SERVICE_ACCOUNT_ROLES=("roles/storage.admin" "roles/compute.admin" "roles/container.admin" "roles/iam.serviceAccountUser")
 export GCS_BUCKET_NAME="tf-state-dev-$PROJECT_NAME"
 export GCS_BUCKET_LOCATION="EUROPE-WEST3"
 ```

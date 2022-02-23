@@ -23,8 +23,8 @@ variable "networks" {
   default = []
 }
 
-variable "instances" {
-  type = list(object({
+variable "bastion" {
+  type = object({
     name         = string
     machine_type = string
     disk_image   = optional(string)
@@ -33,9 +33,7 @@ variable "instances" {
     zone         = string
     subnetwork   = string
     tags         = optional(list(string))
-  }))
-
-  default = []
+  })
 }
 
 variable "firewall_rules" {
@@ -51,4 +49,52 @@ variable "firewall_rules" {
   }))
 
   default = []
+}
+
+variable "gke" {
+  type = object({
+    name                     = string
+    location                 = string
+    project                  = string
+    network                  = string
+    subnetwork               = string
+    cluster_ipv4_cidr        = string
+    initial_node_count       = number
+    remove_default_node_pool = bool
+    private_cluster_config = object({
+      enable_private_nodes         = bool
+      master_ipv4_cidr_block       = string
+      master_global_access_enabled = bool
+      enable_private_endpoint      = bool
+    })
+  })
+}
+
+variable "node_pools" {
+  type = list(object({
+    name               = string
+    project            = string
+    location           = string
+    node_locations     = list(string)
+    initial_node_count = number
+    autoscaling = object({
+      min_node_count = number
+      max_node_count = number
+    })
+
+    management = object({
+      auto_repair  = bool
+      auto_upgrade = bool
+    })
+
+    upgrade_settings = object({
+      max_surge       = number
+      max_unavailable = number
+    })
+
+    node_config = object({
+      machine_type = string
+      tags         = list(string)
+    })
+  }))
 }
