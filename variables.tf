@@ -6,21 +6,26 @@ variable "gcp_config" {
   })
 }
 
-variable "networks" {
-  type = list(object({
+variable "network" {
+  type = object({
     vpc_name                    = string
     vpc_auto_create_subnetworks = optional(string)
     vpc_routing_mode            = optional(string)
 
-    subnets = list(object({
+    private_subnet = object({
       region                   = string
       name                     = string
       ip_cidr_range            = string
       private_ip_google_access = optional(string)
-    }))
-  }))
+    })
 
-  default = []
+    public_subnet = object({
+      region                   = string
+      name                     = string
+      ip_cidr_range            = string
+      private_ip_google_access = optional(string)
+    })
+  })
 }
 
 variable "bastion" {
@@ -31,7 +36,6 @@ variable "bastion" {
     disk_size    = optional(number)
     region       = optional(string)
     zone         = string
-    subnetwork   = string
     tags         = optional(list(string))
   })
 }
@@ -39,7 +43,6 @@ variable "bastion" {
 variable "firewall_rules" {
   type = list(object({
     name               = string
-    network            = string
     allowed_protocol   = string
     allowed_ports      = list(string)
     direction          = optional(string)
@@ -56,8 +59,6 @@ variable "gke" {
     name                     = string
     location                 = string
     project                  = string
-    network                  = string
-    subnetwork               = string
     cluster_ipv4_cidr        = string
     initial_node_count       = number
     remove_default_node_pool = bool

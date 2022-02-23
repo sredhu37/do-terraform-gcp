@@ -16,13 +16,20 @@ variable "vpc_routing_mode" {
   default = "GLOBAL"
 }
 
-variable "subnets" {
-  type = list(object({
+variable "private_subnet" {
+  type = object({
     region                   = string
     name                     = string
     ip_cidr_range            = string
     private_ip_google_access = optional(string)
-  }))
+  })
+}
 
-  default = []
+variable "public_subnet" {
+  type = object({
+    region                   = string
+    name                     = string
+    ip_cidr_range            = string
+    private_ip_google_access = optional(string)
+  })
 }

@@ -31,11 +31,15 @@ data "terraform_remote_state" "tf_remote_state" {
 }
 
 locals {
-  networks = defaults(var.networks, {
+  network = defaults(var.network, {
     vpc_auto_create_subnetworks = "false"
     vpc_routing_mode            = "GLOBAL"
 
-    subnets = {
+    private_subnet = {
+      private_ip_google_access = "true"
+    }
+
+    public_subnet = {
       private_ip_google_access = "true"
     }
   })
@@ -52,13 +56,12 @@ locals {
 module "global_vpc" {
   source = "./modules/networking"
 
-  count = length(local.networks)
-
   gcp_project                 = var.gcp_config.project
-  vpc_name                    = local.networks[count.index].vpc_name
-  vpc_auto_create_subnetworks = local.networks[count.index].vpc_auto_create_subnetworks
-  vpc_routing_mode            = local.networks[count.index].vpc_routing_mode
-  subnets                     = local.networks[count.index].subnets
+  vpc_name                    = local.network.vpc_name
+  vpc_auto_create_subnetworks = local.network.vpc_auto_create_subnetworks
+  vpc_routing_mode            = local.network.vpc_routing_mode
+  private_subnet              = local.network.private_subnet
+  public_subnet               = local.network.public_subnet
 }
 
 resource "google_compute_instance" "bastion" {
@@ -74,7 +77,7 @@ resource "google_compute_instance" "bastion" {
   zone = var.bastion.zone
 
   network_interface {
-    subnetwork = var.bastion.subnetwork
+    subnetwork = module.global_vpc.public_subnet_name
 
     # IPs via which this instance can be accessed via the Internet. Omit to ensure that the instance is not accessible from the Internet.
     access_config {
@@ -91,13 +94,15 @@ resource "google_compute_address" "bastion_static_ip_address" {
   name         = "${var.bastion.name}-static-ip"
   network_tier = "PREMIUM"
   region       = var.bastion.region != "" ? var.bastion.region : var.gcp_config.region
+  # network      = module.global_vpc.global_vpc_name
+  # subnetwork   = module.global_vpc.public_subnet_name
 }
 
 resource "google_compute_firewall" "firewall_rule" {
   count = length(var.firewall_rules)
 
   name    = var.firewall_rules[count.index].name
-  network = var.firewall_rules[count.index].network
+  network = module.global_vpc.global_vpc_name
   allow {
     protocol = var.firewall_rules[count.index].allowed_protocol
     ports    = var.firewall_rules[count.index].allowed_ports
@@ -120,8 +125,8 @@ resource "google_container_cluster" "private_gke" {
   name                     = var.gke.name
   location                 = var.gke.location
   project                  = var.gke.project
-  network                  = var.gke.network
-  subnetwork               = var.gke.subnetwork
+  network                  = module.global_vpc.global_vpc_name
+  subnetwork               = module.global_vpc.private_subnet_name
   cluster_ipv4_cidr        = var.gke.cluster_ipv4_cidr
   initial_node_count       = var.gke.initial_node_count
   remove_default_node_pool = var.gke.remove_default_node_pool

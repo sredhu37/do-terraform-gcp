@@ -4,24 +4,21 @@ gcp_config = {
   region                   = "europe-west3"
 }
 
-networks = [
-  {
-    vpc_name = "global-vpc-sunny"
+network = {
+  vpc_name = "global-vpc-sunny"
 
-    subnets = [
-      {
-        name          = "private-subnet-europe-west3"
-        region        = "europe-west3"
-        ip_cidr_range = "10.1.0.0/24"
-      },
-      {
-        name          = "public-subnet-europe-west3"
-        region        = "europe-west3"
-        ip_cidr_range = "10.2.0.0/24"
-      }
-    ]
+  private_subnet = {
+    name          = "private-subnet-europe-west3"
+    region        = "europe-west3"
+    ip_cidr_range = "10.1.0.0/24"
   }
-]
+
+  public_subnet = {
+    name          = "public-subnet-europe-west3"
+    region        = "europe-west3"
+    ip_cidr_range = "10.2.0.0/24"
+  }
+}
 
 bastion = {
   name         = "bastion1-europe-west3"
@@ -30,14 +27,12 @@ bastion = {
   disk_size    = 15
   region       = "europe-west3"
   zone         = "europe-west3-a"
-  subnetwork   = "public-subnet-europe-west3"
   tags         = ["bastion"]
 }
 
 firewall_rules = [
   {
     name               = "allow-public-ssh-ingress"
-    network            = "global-vpc-sunny"
     allowed_protocol   = "tcp"
     allowed_ports      = ["22"]
     target_tags        = ["bastion"]
@@ -45,7 +40,6 @@ firewall_rules = [
   },
   {
     name             = "allow-ssh-gke-ingress"
-    network          = "global-vpc-sunny"
     allowed_protocol = "tcp"
     allowed_ports    = ["22"]
     source_tags      = ["bastion"]
@@ -54,11 +48,9 @@ firewall_rules = [
 ]
 
 gke = {
-  name       = "gke-private-cluster-europe-west3"
-  location   = "europe-west3-a" # For master; Can be a Region or a Zone
-  project    = "sunny-tf-gcp"
-  network    = "global-vpc-sunny"
-  subnetwork = "private-subnet-europe-west3"
+  name     = "gke-private-cluster-europe-west3"
+  location = "europe-west3-a" # For master; Can be a Region or a Zone
+  project  = "sunny-tf-gcp"
   # A "multi-zonal" cluster is a zonal cluster with at least one additional zone defined;
   # in a multi-zonal cluster, the cluster master is only present in a single zone while nodes are present in each of the primary zone and the node locations.
   # In contrast, in a regional cluster, cluster master nodes are present in multiple zones in the region.

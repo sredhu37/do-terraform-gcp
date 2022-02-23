@@ -97,8 +97,8 @@ done
 Set appropriate values in `input_values.auto.tfvars` file.
 
 ```
-terraform fmt
 terraform init
+terraform fmt -recursive
 terraform validate
 terraform plan -out actions.plan
 terraform apply actions.plan
