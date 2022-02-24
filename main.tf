@@ -130,7 +130,12 @@ resource "google_container_cluster" "private_gke" {
   cluster_ipv4_cidr        = var.gke.cluster_ipv4_cidr
   initial_node_count       = var.gke.initial_node_count
   remove_default_node_pool = var.gke.remove_default_node_pool
-  # master_authorized_networks_config = google_compute_instance.bastion.ip
+  master_authorized_networks_config {
+    cidr_blocks {
+      display_name = "access-master-from-bastion"
+      cidr_block   = "${google_compute_instance.bastion.network_interface[0].access_config[0].nat_ip}/32"
+    }
+  }
 
   private_cluster_config {
     enable_private_nodes    = var.gke.private_cluster_config.enable_private_nodes
