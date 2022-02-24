@@ -177,3 +177,27 @@ resource "google_container_node_pool" "node_pool" {
     tags         = var.node_pools[count.index].node_config.tags
   }
 }
+
+resource "google_compute_router" "cloud_router" {
+  name    = "${module.global_vpc.private_subnet_name}-router"
+  region  = module.global_vpc.private_subnet_region
+  project = module.global_vpc.private_subnet_project
+  network = module.global_vpc.global_vpc_name
+
+  bgp {
+    asn = 64514
+  }
+}
+
+resource "google_compute_router_nat" "nat" {
+  name                               = "${module.global_vpc.private_subnet_name}-nat"
+  region                             = google_compute_router.cloud_router.region
+  project                            = module.global_vpc.private_subnet_project
+  router                             = google_compute_router.cloud_router.name
+  nat_ip_allocate_option             = "AUTO_ONLY"
+  source_subnetwork_ip_ranges_to_nat = "LIST_OF_SUBNETWORKS"
+  subnetwork {
+    name                    = module.global_vpc.private_subnet_name
+    source_ip_ranges_to_nat = ["ALL_IP_RANGES"]
+  }
+}
