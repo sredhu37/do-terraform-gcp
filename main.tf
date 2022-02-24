@@ -3,7 +3,7 @@ terraform {
   experiments      = [module_variable_optional_attrs]
 
   backend "gcs" {
-    bucket = "tf-state-dev-sunny-tf-gcp"
+    bucket = "tf-state-dev-sunny-tf-gcp-2"
     prefix = "terraform/state"
   }
 
@@ -25,7 +25,7 @@ provider "google" {
 data "terraform_remote_state" "tf_remote_state" {
   backend = "gcs"
   config = {
-    bucket = "tf-state-dev-sunny-tf-gcp"
+    bucket = "tf-state-dev-sunny-tf-gcp-2"
     prefix = "terraform/state"
   }
 }

@@ -1,6 +1,6 @@
 gcp_config = {
   sa_credentials_file_path = "./tf-gcp-sa-key.json"
-  project                  = "sunny-tf-gcp"
+  project                  = "sunny-tf-gcp-2"
   region                   = "europe-west3"
 }
 
@@ -50,7 +50,7 @@ firewall_rules = [
 gke = {
   name     = "gke-private-cluster-europe-west3"
   location = "europe-west3-a" # For master; Can be a Region or a Zone
-  project  = "sunny-tf-gcp"
+  project  = "sunny-tf-gcp-2"
   # A "multi-zonal" cluster is a zonal cluster with at least one additional zone defined;
   # in a multi-zonal cluster, the cluster master is only present in a single zone while nodes are present in each of the primary zone and the node locations.
   # In contrast, in a regional cluster, cluster master nodes are present in multiple zones in the region.
@@ -76,7 +76,7 @@ gke = {
 node_pools = [
   {
     name               = "e2-small-europe-west3-1"
-    project            = "sunny-tf-gcp"
+    project            = "sunny-tf-gcp-2"
     location           = "europe-west3-a" # region or zone of the cluster
     node_locations     = ["europe-west3-b"]
     initial_node_count = 1
@@ -99,7 +99,7 @@ node_pools = [
   },
   {
     name               = "e2-medium-europe-west3-2"
-    project            = "sunny-tf-gcp"
+    project            = "sunny-tf-gcp-2"
     location           = "europe-west3-a" # region or zone of the cluster
     node_locations     = ["europe-west3-c"]
     initial_node_count = 1

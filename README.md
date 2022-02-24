@@ -5,6 +5,8 @@
 
 # Pre-setup
 
+Create a GCP account.
+
 ##### Cloud Shell
 
 I prefer to use cloud shell for initial setup as all the commonly used tools are already setup there.
@@ -16,7 +18,7 @@ Click on `Activate Cloud Shell` from gcp console. You might need to click `Autho
 Feel free to set your own values here.
 
 ```
-export PROJECT_NAME="sunny-tf-gcp"
+export PROJECT_NAME="sunny-tf-gcp-2"   # This value should be unique across all projects ever created
 export SERVICE_ACCOUNT_NAME="tf-gcp-sa"
 export SERVICE_ACCOUNT_ROLES=("roles/storage.admin" "roles/compute.admin" "roles/container.admin" "roles/iam.serviceAccountUser")
 export GCS_BUCKET_NAME="tf-state-dev-$PROJECT_NAME"
@@ -65,6 +67,11 @@ gcloud iam service-accounts keys create "$SERVICE_ACCOUNT_NAME-key.json" \
 - DO NOT SHARE IT WITH ANYBODY.
 - DO NOT PUT IT IN ANY VERSION CONTROL SYSTEM LIKE GITHUB, GITLAB, GERRIT, SVN ETC.
 
+##### Billing account (Manually)
+
+- Create a billing account
+- Link it to the project
+
 ##### Make GCS bucket
 
 ```
@@ -88,9 +95,13 @@ for svc in ${service_apis[@]}; do
 done
 ```
 
-## On local workstation (Windows for me)
+## On local workstation
 
 - Install terraform
+- Install [gcloud cli](https://cloud.google.com/sdk/docs/install)
+- `gcloud init`
+- `gcloud auth login`
+- `gcloud auth application-default login`
 
 # Steps to use this setup
 
