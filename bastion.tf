@@ -31,8 +31,3 @@ resource "google_compute_instance" "bastion" {
 
   depends_on = [module.global_vpc]
 }
-
-data "google_compute_image" "debian10_image" {
-  family  = "debian-10"
-  project = "debian-cloud"
-}
