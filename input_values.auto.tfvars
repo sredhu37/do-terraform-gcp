@@ -44,6 +44,14 @@ firewall_rules = [
     allowed_ports    = ["22"]
     source_tags      = ["bastion"]
     target_tags      = ["gke-worker"]
+  },
+
+  {
+    name               = "allow-gke-master-to-nodes-kubeseal"
+    allowed_protocol   = "tcp"
+    allowed_ports      = ["8080"]
+    source_cidr_ranges = ["10.11.0.0/28"]
+    target_tags        = ["gke-worker"]
   }
 ]
 
