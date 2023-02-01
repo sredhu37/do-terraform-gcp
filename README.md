@@ -22,7 +22,7 @@ export PROJECT_NAME="sunny-tf-gcp-5"   # This value should be unique across all 
 export SERVICE_ACCOUNT_NAME="tf-gcp-sa"
 export SERVICE_ACCOUNT_ROLES=("roles/storage.admin" "roles/compute.admin" "roles/container.admin" "roles/iam.serviceAccountUser")
 export GCS_BUCKET_NAME="tf-state-dev-$PROJECT_NAME"
-export GCS_BUCKET_LOCATION="EUROPE-WEST3"
+export GCS_BUCKET_LOCATION="EUROPE-WEST4"
 ```
 
 ##### Create Project

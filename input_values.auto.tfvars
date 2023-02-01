@@ -1,7 +1,7 @@
 gcp_config = {
   sa_credentials_file_path = "./tf-gcp-sa-key.json"
   project                  = "sunny-tf-gcp-5"
-  region                   = "europe-west3"
+  region                   = "europe-west4"
 }
 
 network = {
@@ -10,27 +10,27 @@ network = {
   vpc_routing_mode            = "GLOBAL"
 
   private_subnet = {
-    name                     = "private-subnet-europe-west3"
-    region                   = "europe-west3"
+    name                     = "private-subnet-europe-west4"
+    region                   = "europe-west4"
     ip_cidr_range            = "10.1.0.0/24"
     private_ip_google_access = "true"
   }
 
   public_subnet = {
-    name                     = "public-subnet-europe-west3"
-    region                   = "europe-west3"
+    name                     = "public-subnet-europe-west4"
+    region                   = "europe-west4"
     ip_cidr_range            = "10.2.0.0/24"
     private_ip_google_access = "true"
   }
 }
 
 bastion = {
-  name         = "bastion1-europe-west3"
+  name         = "bastion1-europe-west4"
   machine_type = "g1-small"
   disk_image   = "debian-cloud/debian-10"
   disk_size    = 15
-  region       = "europe-west3"
-  zone         = "europe-west3-a"
+  region       = "europe-west4"
+  zone         = "europe-west4-a"
   tags         = ["bastion"]
 }
 
@@ -63,8 +63,8 @@ firewall_rules = [
 ]
 
 gke = {
-  name     = "gke-private-cluster-europe-west3"
-  location = "europe-west3-a" # For master; Can be a Region or a Zone
+  name     = "gke-private-cluster-europe-west4"
+  location = "europe-west4-a" # For master; Can be a Region or a Zone
   project  = "sunny-tf-gcp-5"
   # A "multi-zonal" cluster is a zonal cluster with at least one additional zone defined;
   # in a multi-zonal cluster, the cluster master is only present in a single zone while nodes are present in each of the primary zone and the node locations.
@@ -74,7 +74,7 @@ gke = {
 
   # master_authorized_networks_config_cidr_blocks = {
   #   cidr_block   = ""         # <IP of bastion machine>/32
-  #   display_name = "bastion1-europe-west3-access"
+  #   display_name = "bastion1-europe-west4-access"
   # }
 
   initial_node_count       = 1
@@ -90,10 +90,10 @@ gke = {
 # We will be using separately managed node pools
 node_pools = [
   {
-    name               = "e2-small-europe-west3-1"
+    name               = "e2-small-europe-west4-1"
     project            = "sunny-tf-gcp-5"
-    location           = "europe-west3-a" # region or zone of the cluster
-    node_locations     = ["europe-west3-b"]
+    location           = "europe-west4-a" # region or zone of the cluster
+    node_locations     = ["europe-west4-b"]
     initial_node_count = 1
     autoscaling = {
       min_node_count = 1
@@ -113,10 +113,10 @@ node_pools = [
     }
   },
   {
-    name               = "e2-medium-europe-west3-2"
+    name               = "e2-medium-europe-west4-2"
     project            = "sunny-tf-gcp-5"
-    location           = "europe-west3-a" # region or zone of the cluster
-    node_locations     = ["europe-west3-c"]
+    location           = "europe-west4-a" # region or zone of the cluster
+    node_locations     = ["europe-west4-c"]
     initial_node_count = 1
     autoscaling = {
       min_node_count = 1
