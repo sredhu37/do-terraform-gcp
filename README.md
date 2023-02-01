@@ -88,7 +88,7 @@ gsutil ls -p $PROJECT_NAME
 ##### Enable required APIs
 
 ```
-service_apis=("cloudresourcemanager" "cloudbilling" "iam" "compute" "container")
+service_apis=("cloudresourcemanager" "cloudbilling" "iam" "compute" "container" "dns")
 
 for svc in ${service_apis[@]}; do
   gcloud services enable $svc.googleapis.com;
