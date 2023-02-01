@@ -21,7 +21,7 @@ variable "private_subnet" {
     region                   = string
     name                     = string
     ip_cidr_range            = string
-    private_ip_google_access = optional(string)
+    private_ip_google_access = string
   })
 }
 
@@ -30,6 +30,6 @@ variable "public_subnet" {
     region                   = string
     name                     = string
     ip_cidr_range            = string
-    private_ip_google_access = optional(string)
+    private_ip_google_access = string
   })
 }

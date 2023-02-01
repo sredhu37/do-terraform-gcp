@@ -1,16 +1,11 @@
 terraform {
   required_version = ">= 1.0.0"
-  experiments      = [module_variable_optional_attrs]
 }
 
 locals {
-  private_subnet = defaults(var.private_subnet, {
-    private_ip_google_access = "true"
-  })
+  private_subnet = var.private_subnet
 
-  public_subnet = defaults(var.public_subnet, {
-    private_ip_google_access = "true"
-  })
+  public_subnet = var.public_subnet
 }
 
 resource "google_compute_network" "global_vpc" {

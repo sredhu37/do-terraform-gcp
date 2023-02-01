@@ -9,21 +9,21 @@ variable "gcp_config" {
 variable "network" {
   type = object({
     vpc_name                    = string
-    vpc_auto_create_subnetworks = optional(string)
-    vpc_routing_mode            = optional(string)
+    vpc_auto_create_subnetworks = string
+    vpc_routing_mode            = string
 
     private_subnet = object({
       region                   = string
       name                     = string
       ip_cidr_range            = string
-      private_ip_google_access = optional(string)
+      private_ip_google_access = string
     })
 
     public_subnet = object({
       region                   = string
       name                     = string
       ip_cidr_range            = string
-      private_ip_google_access = optional(string)
+      private_ip_google_access = string
     })
   })
 }

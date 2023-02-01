@@ -12,7 +12,7 @@ resource "google_compute_instance" "bastion" {
   boot_disk {
     initialize_params {
       image = var.bastion.disk_image != "" ? var.bastion.disk_image : data.google_compute_image.debian10_image.self_link
-      size  = local.bastion.disk_size
+      size  = var.bastion.disk_size
     }
   }
 

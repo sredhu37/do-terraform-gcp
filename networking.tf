@@ -2,11 +2,11 @@ module "global_vpc" {
   source = "./modules/networking"
 
   gcp_project                 = var.gcp_config.project
-  vpc_name                    = local.network.vpc_name
-  vpc_auto_create_subnetworks = local.network.vpc_auto_create_subnetworks
-  vpc_routing_mode            = local.network.vpc_routing_mode
-  private_subnet              = local.network.private_subnet
-  public_subnet               = local.network.public_subnet
+  vpc_name                    = var.network.vpc_name
+  vpc_auto_create_subnetworks = var.network.vpc_auto_create_subnetworks
+  vpc_routing_mode            = var.network.vpc_routing_mode
+  private_subnet              = var.network.private_subnet
+  public_subnet               = var.network.public_subnet
 }
 
 resource "google_compute_router" "cloud_router" {
@@ -44,7 +44,7 @@ resource "google_compute_firewall" "firewall_rule" {
     ports    = var.firewall_rules[count.index].allowed_ports
   }
 
-  direction     = local.firewall_rules[count.index].direction
+  direction     = var.firewall_rules[count.index].direction
   source_ranges = var.firewall_rules[count.index].source_cidr_ranges
   source_tags   = var.firewall_rules[count.index].source_tags
   target_tags   = var.firewall_rules[count.index].target_tags

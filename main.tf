@@ -1,9 +1,8 @@
 terraform {
   required_version = ">= 1.0.0"
-  experiments      = [module_variable_optional_attrs]
 
   backend "gcs" {
-    bucket = "tf-state-dev-sunny-tf-gcp-2"
+    bucket = "tf-state-dev-sunny-tf-gcp-5"
     prefix = "terraform/state"
   }
 
@@ -25,30 +24,7 @@ provider "google" {
 data "terraform_remote_state" "tf_remote_state" {
   backend = "gcs"
   config = {
-    bucket = "tf-state-dev-sunny-tf-gcp-2"
+    bucket = "tf-state-dev-sunny-tf-gcp-5"
     prefix = "terraform/state"
   }
-}
-
-locals {
-  network = defaults(var.network, {
-    vpc_auto_create_subnetworks = "false"
-    vpc_routing_mode            = "GLOBAL"
-
-    private_subnet = {
-      private_ip_google_access = "true"
-    }
-
-    public_subnet = {
-      private_ip_google_access = "true"
-    }
-  })
-
-  bastion = defaults(var.bastion, {
-    disk_size = 10
-  })
-
-  firewall_rules = defaults(var.firewall_rules, {
-    direction = "INGRESS"
-  })
 }
